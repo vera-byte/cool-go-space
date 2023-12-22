@@ -1,0 +1,111 @@
+
+syntax = "proto3";
+
+package space;
+
+option go_package = "github.com/vera-byte/cool-go-space/api/space/v1";
+
+// 分页
+message PageReq {
+    // 当前页
+    int64 Page = 1;
+    // 当前页条数
+    int64 Size = 2;
+    // 排序字段
+    string Order = 3;
+    // 升序/降序
+    string Sort = 4;
+    // ...其他参数自行添加
+    
+}
+
+message Pagination {
+    // 当前页
+    int64 Page = 1;
+    // 当前页条数
+    int64 Size = 2;
+    // 总数
+    int64 Total = 3;
+}
+
+message ListItem {
+    oneof item_type {
+        int64 Id = 1;
+        // 列表每一项类型
+    }
+}
+message PageRes {
+    repeated ListItem List = 1;
+    Pagination Pagination = 2;
+}
+// 列表
+message ListReq {
+    // 排序字段
+    string Order = 1;
+    // 升序/降序
+    string Sort = 2;
+}
+message ListRes {
+    repeated ListItem List = 1;
+}
+
+// 删除
+message DeletReq {}
+message DeletRes {
+repeated int64 Ids = 1; // v: required
+}
+// 新增
+message AddReq {}
+message AddRes {}
+// 详情
+message InfoReq {
+    int64 Id = 1; // v: required
+}
+message InfoRes {}
+// 更新
+message UpdateReq {
+    int64 Id = 1; // v: required
+}
+message UpdateRes {}
+service Crud {
+    rpc Page(PageReq) returns(PageRes);
+    rpc Add(AddReq) returns(AddRes);
+    rpc Delet(DeletReq) returns(DeletRes);
+    rpc Info(InfoReq) returns(InfoRes);
+    rpc Update(UpdateReq) returns(UpdateRes);
+    rpc List(ListReq) returns(ListRes);
+
+}
+
+ 
+
+
+
+
+message OssSignReq {
+    // OSS目录
+    string Dir = 1; // v: required
+    // 用户ID  
+    int64 Uid = 2; // v: required
+    
+  }
+  
+  message OssSignRes {
+    // 授权信息
+    string Policy = 1;
+    // 授权Key
+    string OSSAccessKeyId = 2;
+    // 授权签名
+    string Signature = 3;
+    // 授权域名
+    string Host = 4;
+    // 目录UIDKey
+    string Key = 5;
+    // 上传成功的回调状态码
+    int32 SUCCESS_ACTION_STATUS = 6;
+  }
+  
+  service Oss {
+    // OSS签名
+    rpc SignUrl(OssSignReq) returns(OssSignRes);
+  }

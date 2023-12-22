@@ -1,0 +1,17 @@
+# https://taskfile.dev
+
+version: "3"
+
+tasks:
+  default:
+    cmds:
+      - task: tidy
+  tidy:
+    cmds:
+      - go mod tidy
+  start:
+    cmds:
+      - go run space.go
+  genRpc:
+    cmds:
+      - gf gen pb -c internal/service -a pb
